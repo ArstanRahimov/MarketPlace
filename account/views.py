@@ -13,6 +13,7 @@ class RegistrationView(APIView):
         serializer = RegistrationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            print(serializer, '2222222222222222222222222')
             return Response('Ваш аккаунт зарегистрирован. Чтобы активировать, введите код, отправленный Вам на почту',
                             status=201)
         return Response(serializer.errors, status=400)

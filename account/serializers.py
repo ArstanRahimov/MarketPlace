@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model, authenticate
 from django.core.mail import send_mail
 from rest_framework import serializers
 
+from account.task import send_activation_mail
 
 User = get_user_model()
 
@@ -28,7 +29,7 @@ class RegistrationSerializer(serializers.Serializer):
     def create(self, attrs):
         user = User.objects.create_user(**attrs)
         user.create_activation_code()
-        user.send_activation_mail()
+        send_activation_mail(user.email, user.activation_code)
         return user
 
 
