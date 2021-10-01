@@ -14,4 +14,4 @@ class Review(models.Model):
         verbose_name_plural = 'Отзывы'
 
     def __str__(self):
-        return f'{self.product} --> {self.author}'
+        return f'{self.product} --> {self.user}'

@@ -19,17 +19,18 @@ class RegistrationSerializer(serializers.Serializer):
             raise serializers.ValidationError('Адрес уже зарегистрирован')
         return email
 
-    def validate(self, attrs):
-        password = attrs.get('password')
-        password2 = attrs.pop('password_confirm')
+    def validate(self, data):
+        password = data.get('password')
+        password2 = data.pop('password_confirm')
         if password != password2:
             raise serializers.ValidationError('Пароли не совпадают')
-        return attrs
+        return data
 
-    def create(self, attrs):
-        user = User.objects.create_user(**attrs)
+    def create(self, validated_data):
+        user = User.objects.create_user(**validated_data)
         user.create_activation_code()
-        send_activation_mail(user.email, user.activation_code)
+        print(user.email)
+        send_activation_mail.delay(user.email, user.activation_code)
         return user
 
 
